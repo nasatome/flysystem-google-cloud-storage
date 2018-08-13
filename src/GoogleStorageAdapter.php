@@ -458,8 +458,10 @@ class GoogleStorageAdapter extends AbstractAdapter
         $signedUrl = $object->signedUrl($expiration, $options);
 
         if ($this->getStorageApiUri() !== self::STORAGE_API_URI_DEFAULT) {
-            list($url, $params) = explode('?', $signedUrl, 2);
-            $signedUrl = $this->getUrl($path) . '?' . $params;
+            if (!isset($options['cname'])) {
+                list($url, $params) = explode('?', $signedUrl, 2);
+                $signedUrl = $this->getUrl($path) . '?' . $params;
+            }
         }
 
         return $signedUrl;
